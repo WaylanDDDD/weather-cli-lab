@@ -74,6 +74,10 @@ def get_location(city):
         data = json.load(response)
 
     results = data.get("results") or []
+
+    if not results:
+        raise ValueError(f"City '{city}' was not found.")
+
     return results[0]
 
 
@@ -113,7 +117,13 @@ def format_weather(
 
 def main():
     args = parse_args()
-    location = get_location(args.city)
+
+    try:
+        location = get_location(args.city)
+    except ValueError as error:
+        print(f"Error: {error}")
+        return
+
     city_name = location["name"]
     country = location.get("country")
 
