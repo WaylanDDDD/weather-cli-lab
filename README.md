@@ -1,6 +1,6 @@
 # Weather CLI
 
-A command-line utility for checking current weather in a selected city using the Open-Meteo API.
+A lightweight CLI for getting current weather forecasts from Open-Meteo.
 
 ## Usage
 
