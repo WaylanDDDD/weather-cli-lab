@@ -1,12 +1,26 @@
 # Weather CLI
 
-A simple command-line utility that displays current weather
-conditions in Nizhny Novgorod. The output is designed to fit on one terminal line.
-
-Weather data is provided by the Open-Meteo API.
+A simple command-line utility for displaying current weather
+conditions using the Open-Meteo API.
 
 ## Usage
 
-Run the program:
+Run with the default city:
 
-    python3 weather.py
+    python3 main.py
+
+Choose a city:
+
+    python3 main.py --city Moscow
+
+Select additional weather parameters:
+
+    python3 main.py --wind --humidity --feels-like
+
+Combine options:
+
+    python3 main.py --city Kazan --wind --humidity
+
+Display available options:
+
+    python3 main.py --help
