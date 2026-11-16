@@ -76,7 +76,7 @@ def get_location(city):
     results = data.get("results") or []
 
     if not results:
-        raise ValueError(f"City '{city}' was not found.")
+        raise LookupError(f"City '{city}' was not found.")
 
     return results[0]
 
@@ -120,7 +120,7 @@ def main():
 
     try:
         location = get_location(args.city)
-    except ValueError as error:
+    except LookupError as error:
         print(f"Error: {error}")
         return
 
