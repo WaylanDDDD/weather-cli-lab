@@ -1,4 +1,5 @@
 import json
+import argparse
 from urllib.parse import urlencode
 from urllib.request import urlopen
 
@@ -31,7 +32,66 @@ WEATHER_CODES = {
 }
 
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Display current weather."
+    )
+
+    parser.add_argument(
+        "--wind",
+        action="store_true",
+        help="Show wind speed",
+    )
+    parser.add_argument(
+        "--humidity",
+        action="store_true",
+        help="Show relative humidity",
+    )
+    parser.add_argument(
+        "--feels-like",
+        action="store_true",
+        help="Show apparent temperature",
+    )
+
+    return parser.parse_args()
+
+
+def format_weather(
+    current,
+    show_wind=False,
+    show_humidity=False,
+    show_feels_like=False,
+):
+    temperature = current["temperature_2m"]
+    weather_code = current["weather_code"]
+
+    condition = WEATHER_CODES.get(
+        weather_code, "Неизвестные условия"
+    )
+
+    parts = [
+        f"Нижний Новгород: {temperature:+.0f}°C",
+        condition,
+    ]
+
+    if show_feels_like:
+        apparent = current["apparent_temperature"]
+        parts.append(f"ощущается как {apparent:+.0f}°C")
+
+    if show_humidity:
+        humidity = current["relative_humidity_2m"]
+        parts.append(f"влажность {humidity}%")
+
+    if show_wind:
+        wind = current["wind_speed_10m"]
+        parts.append(f"ветер {wind:.0f} км/ч")
+
+    return " · ".join(parts)
+
+
 def main():
+    args = parse_args()
+
     params = {
         "latitude": LATITUDE,
         "longitude": LONGITUDE,
@@ -52,20 +112,13 @@ def main():
         data = json.load(response)
 
     current = data["current"]
-    temperature = current["temperature_2m"]
-    weather_code = current["weather_code"]
-    humidity = current["relative_humidity_2m"]
-    wind_speed = current["wind_speed_10m"]
-    apparent_temperature = current["apparent_temperature"]
-
-    condition = WEATHER_CODES.get(
-        weather_code, "Неизвестные условия"
-    )
-
     print(
-        f"Нижний Новгород: {temperature:+.0f}°C · {condition} · "
-        f"ощущается как {apparent_temperature:+.0f}°C · "
-        f"влажность {humidity}% · ветер {wind_speed:.0f} км/ч"
+        format_weather(
+            current,
+            show_wind=args.wind,
+            show_humidity=args.humidity,
+            show_feels_like=args.feels_like,
+        )
     )
 
 
