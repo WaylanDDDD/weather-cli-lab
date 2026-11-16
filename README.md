@@ -24,3 +24,12 @@ Combine options:
 Display available options:
 
     python3 main.py --help
+
+## Weather data
+
+Weather information is provided by Open-Meteo.
+
+- Temperature: Celsius
+- Wind speed: km/h
+- Humidity: percent
+- Location: selected using Open-Meteo Geocoding API
