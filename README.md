@@ -1,7 +1,6 @@
 # Weather CLI
 
-A simple command-line utility for displaying current weather
-conditions using the Open-Meteo API.
+A command-line utility for checking current weather in a selected city using the Open-Meteo API.
 
 ## Usage
 
@@ -24,6 +23,20 @@ Combine options:
 Display available options:
 
     python3 main.py --help
+
+## Command-line options
+
+| Option | Description | Default |
+| --- | --- | --- |
+| `--city CITY` | City to retrieve weather for | Нижний Новгород |
+| `--wind` | Show wind speed | Disabled |
+| `--humidity` | Show relative humidity | Disabled |
+| `--feels-like` | Show apparent temperature | Disabled |
+
+For city names containing spaces, enclose the value in quotes:
+
+    python3 main.py --city "Nizhny Novgorod"
+
 
 ## Weather data
 
