@@ -31,6 +31,24 @@ WEATHER_CODES = {
 }
 
 
+def format_weather(current):
+    temperature = current["temperature_2m"]
+    weather_code = current["weather_code"]
+    humidity = current["relative_humidity_2m"]
+    wind_speed = current["wind_speed_10m"]
+    apparent_temperature = current["apparent_temperature"]
+
+    condition = WEATHER_CODES.get(
+        weather_code, "Неизвестные условия"
+    )
+
+    return (
+        f"Нижний Новгород: {temperature:+.0f}°C · {condition} · "
+        f"ощущается как {apparent_temperature:+.0f}°C · "
+        f"влажность {humidity}% · ветер {wind_speed:.0f} км/ч"
+    )
+
+
 def main():
     params = {
         "latitude": LATITUDE,
@@ -52,21 +70,7 @@ def main():
         data = json.load(response)
 
     current = data["current"]
-    temperature = current["temperature_2m"]
-    weather_code = current["weather_code"]
-    humidity = current["relative_humidity_2m"]
-    wind_speed = current["wind_speed_10m"]
-    apparent_temperature = current["apparent_temperature"]
-
-    condition = WEATHER_CODES.get(
-        weather_code, "Неизвестные условия"
-    )
-
-    print(
-        f"Нижний Новгород: {temperature:+.0f}°C · {condition} · "
-        f"ощущается как {apparent_temperature:+.0f}°C · "
-        f"влажность {humidity}% · ветер {wind_speed:.0f} км/ч"
-    )
+    print(format_weather(current))
 
 
 if __name__ == "__main__":
