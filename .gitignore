@@ -8,3 +8,6 @@ venv/
 
 # Environment variables
 .env
+
+# JetBrains IDE
+.idea/
