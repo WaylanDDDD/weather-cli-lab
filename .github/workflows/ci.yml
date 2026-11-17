@@ -21,3 +21,31 @@ jobs:
 
       - name: Check Python syntax
         run: python3 -m py_compile main.py
+
+  secret-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Install TruffleHog
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/trufflesecurity/trufflehog/v3.99.9/scripts/install.sh \
+            | sh -s -- -b "$RUNNER_TEMP/bin" v3.99.9
+          echo "$RUNNER_TEMP/bin" >> "$GITHUB_PATH"
+
+      - name: Create source snapshot
+        run: |
+          mkdir -p "$RUNNER_TEMP/tree"
+          git archive HEAD | tar -x -C "$RUNNER_TEMP/tree"
+
+      - name: Scan for secrets
+        run: |
+          trufflehog filesystem "$RUNNER_TEMP/tree" \
+            --results=verified,unknown,unverified \
+            --no-verification \
+            --fail \
+            --fail-on-scan-errors \
+            --no-update \
+            --github-actions
